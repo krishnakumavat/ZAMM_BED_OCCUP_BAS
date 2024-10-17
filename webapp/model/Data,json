@@ -1,0 +1,35 @@
+{
+	"Projects": {
+		"Activities": [{
+				"id": "line1",
+				"text": "Project - 1",
+				"type": "chevron",
+				"fill": "grey",
+				"startTime": "20201101090000",
+				"endTime": "20201127090000"
+			}, {
+				"id": "line2",
+				"text": "Project - 2",
+				"type": "chevron",
+				"fill": "orange",
+				"startTime": "20201101090000",
+				"endTime": "20201127090000"
+			}, {
+				"id": "line3",
+				"text": "Project - 3",
+				"type": "chevron",
+				"fill": "red",
+				"startTime": "2020110090000",
+				"endTime": "20201127090000"
+			}, {
+				"id": "line4",
+				"text": "Project - 4",
+				"type": "chevron",
+				"fill": "green",
+				"startTime": "2020110090000",
+				"endTime": "20201127090000"
+			}
+
+		]
+	}
+}

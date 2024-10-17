@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
+    <edmx:DataServices m:DataServiceVersion="2.0">
+        <Schema Namespace="SMY.ISHU_OCCUPANCY_SRV" xml:lang="en" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+            <EntityType Name="Occupany_rooms_beds" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Objid"/>
+                    <PropertyRef Name="Ishid"/>
+                </Key>
+                <Property Name="Objid" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Object ID" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Ishid" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="HC OU/BU" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Objid_Rm" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Object ID" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Ishid_Rm" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="HC OU/BU" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Objcat_Rm" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Category" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Objid_Bd" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Object ID" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Ishid_Bd" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="HC OU/BU" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Objcat_Bd" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Category" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="BlkInd" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Blocking Ind." sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="BlkRsn" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Block. Reason" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="patientDetails" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Falnr"/>
+                </Key>
+                <Property Name="Falnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Case" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Patnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Patient" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Patientname" Type="Edm.String" Nullable="false" MaxLength="161" sap:unicode="false" sap:label="IS-H: Patient Name" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Birthdt" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:label="Date of Birth" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Admissiondate" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:label="Date" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Dischargedate" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:label="Date" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Class" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Class" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Sex" Type="Edm.String" Nullable="false" MaxLength="6" sap:unicode="false" sap:label="IS-H: Sex" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="patientAllergy" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Patnr"/>
+                </Key>
+                <Property Name="Patnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Patient" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="AllergySeqno" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="Allergy Number" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Einri" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Institution" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Descr" Type="Edm.String" Nullable="false" MaxLength="160" sap:unicode="false" sap:label="Allergen" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Adcomment" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="Comment" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Allergygroup" Type="Edm.String" Nullable="false" MaxLength="128" sap:unicode="false" sap:label="Name" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Certainty" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="Certainty" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Reaction" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="Reaction" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Severity" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="Severity" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Type" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="Allergy Type" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CreateDate" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Created On" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="patientRiskFactors" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Patnr"/>
+                </Key>
+                <Property Name="Patnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Patient" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Einri" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Institution" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Rsfnr" Type="Edm.String" Nullable="false" MaxLength="6" sap:unicode="false" sap:label="Risk Factor" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Lfdnr" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Sequence No." sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="RiskName" Type="Edm.String" Nullable="false" MaxLength="200" sap:unicode="false" sap:label="ISH: Risk Name" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityContainer Name="SMY_ISHU_OCCUPANCY_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+                <EntitySet Name="Occupany_rooms_bedsSet" EntityType="SMY.ISHU_OCCUPANCY_SRV.Occupany_rooms_beds" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="patientDetailsSet" EntityType="SMY.ISHU_OCCUPANCY_SRV.patientDetails" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="patientAllergySet" EntityType="SMY.ISHU_OCCUPANCY_SRV.patientAllergy" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="patientRiskFactorsSet" EntityType="SMY.ISHU_OCCUPANCY_SRV.patientRiskFactors" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+            </EntityContainer>
+            <atom:link rel="self" href="http://80.227.119.66:8000/sap/opu/odata/smy/ISHU_OCCUPANCY_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+            <atom:link rel="latest-version" href="http://80.227.119.66:8000/sap/opu/odata/smy/ISHU_OCCUPANCY_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

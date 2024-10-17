@@ -1,0 +1,143 @@
+<mvc:View controllerName="ZAMM_BED_OCCUP.controller.Overview" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc"
+	displayBlock="true" xmlns="sap.m" xmlns:gantt="sap.gantt.simple" xmlns:axistime="sap.gantt.axistime" xmlns:config="sap.gantt.config"
+	xmlns:shapes="sap.gantt.simple.shapes" xmlns:table="sap.ui.table" xmlns:core="sap.ui.core" xmlns:m="sap.m">
+	<App>
+		<pages>
+			<Page title="{i18n>title}" showHeader="false">
+				<subHeader>
+					<OverflowToolbar design="Transparent">
+						<ToolbarSpacer/>
+						<Label text="{i18n>title}" design="Bold"/>
+						<ToolbarSpacer/>
+						<Button icon="sap-icon://create" tooltip="Create" press="_onCreateRecord"/>
+						<Button icon="sap-icon://account" tooltip="Create"/>
+					</OverflowToolbar>
+				</subHeader>
+				<content>
+					<gantt:GanttChartContainer>
+						<gantt:toolbar>
+							<gantt:ContainerToolbar showLegendButton="true">
+								<HBox justifyContent="SpaceBetween" alignContent="Center" alignItems="Center">
+									<items>
+										<Label text="Select Floor"></Label>
+										<m:Select class="sapUiSmallMarginBegin" items="{floorModel>/}" selectedKey="{viewModel>/floorKey}" change="_onFloorSelect">
+											<m:items>
+												<core:Item text="{floorModel>text}" key="{floorModel>id}"/>
+											</m:items>
+										</m:Select>
+									</items>
+								</HBox>
+								<HBox justifyContent="SpaceBetween" alignContent="Center" alignItems="Center">
+									<items>
+										<Label text="Select Duration"></Label>
+										<m:Select class="sapUiSmallMarginBegin">
+											<m:items>
+												<core:Item text=""/>
+												<core:Item text="1 Month"/>
+												<core:Item text="3 Months"/>
+												<core:Item text="6 Months"/>
+												<core:Item text="12 Months"/>
+											</m:items>
+										</m:Select>
+									</items>
+								</HBox>
+								<HBox justifyContent="SpaceBetween" alignContent="Center" alignItems="Center">
+									<items>
+										<Label text="Select Date"></Label>
+										<DatePicker class="sapUiSmallMarginBegin"></DatePicker>
+									</items>
+								</HBox>
+								
+								<gantt:legendContainer>
+									<gantt:LegendContainer>
+										<gantt:ListLegend title="Legend(Departments)" items="{legendModel>/}">
+											<gantt:ListLegendItem legendName="project2">
+												<!-- <gantt:legendShapeGroup>
+													<gantt:LegendShapeGroup orientation="Vertical" title="{legendModel>id}">
+														<gantt:shapes>
+															<gantt:BaseRectangle fill="{legendModel>color}"/>
+														</gantt:shapes>
+													</gantt:LegendShapeGroup>
+												</gantt:legendShapeGroup> -->
+											</gantt:ListLegendItem>
+											<!--<gantt:ListLegendItem legendName="project2">-->
+											<!--	<gantt:legendShapeGroup>-->
+											<!--		<gantt:LegendShapeGroup orientation="Vertical" title="Cardiology">-->
+											<!--			<gantt:shapes>-->
+											<!--				<gantt:BaseRectangle fill="#FF0000"/>-->
+											<!--			</gantt:shapes>-->
+											<!--		</gantt:LegendShapeGroup>-->
+											<!--	</gantt:legendShapeGroup>-->
+											<!--</gantt:ListLegendItem>-->
+										</gantt:ListLegend>
+									</gantt:LegendContainer>
+								</gantt:legendContainer>
+							</gantt:ContainerToolbar>
+						</gantt:toolbar>
+						<gantt:GanttChartWithTable enableAdhocLine="false" 
+												   shapePress="_onShapePress"
+												   shapeDoubleClick="_onShowPatientDetails" 
+												   shapeMouseEnter="_onShapeHover" 
+												   enableSelectAndDrag="true" 
+												   shapeDrop="_onShapeDrop"
+							                       showShapeTimeOnDrag="true" 
+							                       shapeResize="_onShapeResize"
+												   shapeSelectionSettings="{color:'grey', strokeWidth:2, strokeDasharray:'5,1', fillOpacity: 0.8, shapeColor:'sapUiChartPaletteSemanticGoodLight2'}"
+												   shapeSelectionMode="Single">
+							<!-- <gantt:axisTimeStrategy>
+								<axistime:ProportionZoomStrategy>
+									<axistime:totalHorizon>
+										<config:TimeHorizon startTime="{viewModel>/totalAxisStart}" endTime="{viewModel>/totalAxisEnd}"></config:TimeHorizon>
+									</axistime:totalHorizon>
+									<axistime:visibleHorizon>
+										<config:TimeHorizon startTime="{viewModel>/axisStartTime}" endTime="{viewModel>/axisEndTime}"></config:TimeHorizon>
+									</axistime:visibleHorizon>
+								</axistime:ProportionZoomStrategy>
+							</gantt:axisTimeStrategy> -->
+							<gantt:table>
+								<table:TreeTable selectionMode="Single" visibleRowCountMode="Auto" minAutoRowCount="12" selectionBehaviour="RowSelector"
+									enableColumnReordering="false" rows="{ path:'/root', parameters:{ arrayNames:['children'], numberOfExpandedLevels:1 } }">
+									<table:columns>
+										<table:Column label="{viewModel>/floorKeyText}" template="text" width="12rem"></table:Column>
+										<table:Column label="Overlap" template="text" width="2.5rem">
+											<table:template>
+												<core:Icon src="sap-icon://alert" color="red" visible="{isOverlap}"></core:Icon>
+											</table:template>
+										</table:Column>
+										<table:Column label="Room Class" template="text" width="2.5rem">
+											<table:template>
+												<core:Icon src="sap-icon://favorite" color="#64E4CE" visible="{isEquipment}"></core:Icon>
+											</table:template>
+										</table:Column>
+										<table:Column label="Risk Factor" template="text" width="2.5rem">
+											<table:template>
+												<core:Icon src="sap-icon://information" color="#E69A17" visible="{isRiskFactor}"></core:Icon>
+											</table:template>
+										</table:Column>
+										<table:Column label="Occupancy" template="text" width="2.5rem">
+											<table:template>
+												<core:Icon src="sap-icon://accept" color="#097969" visible="{isOccupancy}"></core:Icon>
+											</table:template>
+										</table:Column>
+									</table:columns>
+									<table:rowSettingsTemplate>
+										<gantt:GanttRowSettings rowId="{id}" shapes1="{path:'task', templateShareable:false}" shapes2="{path:'subtask', templateShareable:false}">
+											<gantt:shapes1>
+												<shapes:Task time="{path:'startTime', formatter:'.fnTimeConverter'}" endTime="{path:'endTime', formatter:'.fnTimeConverter'}"
+													type="SummaryExpanded" color="sapUiAccent5" visible="false" enableDnd="true" draggable="true" resizable="true" selectable="true"/>
+											</gantt:shapes1>
+											<gantt:shapes2>
+												<gantt:BaseRectangle fill="{fillColor}" title="{title}" titleColor="{titleColor}" time="{path:'startTime', formatter:'.fnTimeConverter'}"
+													endTime="{path:'endTime', formatter:'.fnTimeConverter'}" hoverable="true" draggable="true" enableDnd="true" resizable="true" selectable="true"></gantt:BaseRectangle>
+											</gantt:shapes2>
+										</gantt:GanttRowSettings>
+									</table:rowSettingsTemplate>
+								</table:TreeTable>
+							</gantt:table>
+						</gantt:GanttChartWithTable>
+					</gantt:GanttChartContainer>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

@@ -1,0 +1,147 @@
+<core:FragmentDefinition xmlns:l="sap.ui.layout" xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core" xmlns:form="sap.ui.layout.form"
+	xmlns:f="sap.ui.layout.form" xmlns:sap.me="sap.me" xmlns:sap.ui.layout="sap.ui.layout" xmlns="sap.m" xmlns:viz="sap.viz.ui5.controls"
+	xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds" xmlns:viz.data="sap.viz.ui5.data" xmlns:c="sap.suite.ui.microchart"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:vizFeeds="sap.viz.ui5.controls.common.feeds" xmlns:rte="sap.ui.richtexteditor"
+	xmlns:commons="sap.ui.commons" xmlns:layout="sap.ui.layout" xmlns:commonssuite="sap.suite.ui.commons">
+	<Dialog contentWidth="95%" contentHeight="100%" title="{i18n>lblSelectArticle}" showHeader="true">
+		<Page showHeader="false">
+			<headerContent>
+				<Button type="Default" icon="sap-icon://decline" iconFirst="true" width="auto" enabled="true" visible="true" tooltip="Close"
+					iconDensityAware="false" press="_onCommentsClose"/>
+			</headerContent>
+			<content>
+				<f:Form editable="true">
+					<f:layout>
+						<f:ResponsiveGridLayout labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0"
+							emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" columnsS="1" singleContainerFullSize="false"/>
+					</f:layout>
+					<f:formContainers>
+						<f:FormContainer>
+							<f:title>
+								<core:Title text="General Data" emphasized="true" level="H3"></core:Title>
+							</f:title>
+							<f:formElements class="sapUiMarginTopBottom">
+								<f:FormElement class="sapUiMarginTopBottom">
+									<form:label>
+										<Label text="Last/First Name" design="Bold" width="100%" required="true" textAlign="{viewModel>/textAlignment}" textDirection="Inherit"
+											visible="true" wrapping="true" class="blackLabel"/>
+									</form:label>
+									<f:fields>
+										<HBox justifyContent="SpaceAround" alignContent="Center" alignItems="Center">
+											<items>
+												<Input placeholder="Last Name"></Input>
+												<Input placeholder="First Name" class="sapUiTinyMarginBegin"></Input>
+											</items>
+										</HBox>
+									</f:fields>
+								</f:FormElement>
+								<f:FormElement class="sapUiMarginTopBottom">
+									<form:label>
+										<Label text="Date of Birth" design="Bold" width="100%" required="true" textAlign="{viewModel>/textAlignment}" textDirection="Inherit"
+											visible="true" wrapping="true" class="blackLabel"/>
+									</form:label>
+									<f:fields>
+										<DatePicker></DatePicker>
+									</f:fields>
+								</f:FormElement>
+								<f:FormElement class="sapUiMarginTopBottom">
+									<form:label>
+										<Label text="Gender" design="Bold" width="100%" required="true" textAlign="{viewModel>/textAlignment}" textDirection="Inherit"
+											visible="true" wrapping="true" class="blackLabel customMarginRemarks"/>
+									</form:label>
+									<f:fields>
+										<HBox justifyContent="Start">
+											<items>
+												<!--<RadioButtonGroup>-->
+												<!--	<buttons>-->
+												<!--		<RadioButton text="Male" id="M" class="sapUiSmallMarginEnd blackLabel"></RadioButton>-->
+												<!--		<RadioButton text="Female" id="F" class="sapUiSmallMarginEnd blackLabel"></RadioButton>-->
+												<!--		<RadioButton text="Unknown" id="U" class="sapUiSmallMarginEnd blackLabel"></RadioButton>-->
+												<!--	</buttons>-->
+												<!--</RadioButtonGroup>-->
+											</items>
+										</HBox>
+									</f:fields>
+								</f:FormElement>
+								<f:FormElement class="sapUiMarginTopBottom">
+									<form:label>
+										<Label text="Street" design="Bold" width="100%" required="true" textAlign="{viewModel>/textAlignment}" textDirection="Inherit"
+											visible="true" wrapping="true" class="blackLabel customMarginRemarks"/>
+									</form:label>
+									<f:fields>
+										<HBox justifyContent="SpaceAround" alignContent="Center" alignItems="Center">
+											<items>
+												<Input placeholder="Street"></Input>
+												<Input placeholder="House No." class="sapUiTinyMarginBegin"></Input>
+											</items>
+										</HBox>
+									</f:fields>
+								</f:FormElement>
+								<f:FormElement class="sapUiMarginTopBottom">
+									<form:label>
+										<Label text="PO Box/Town" design="Bold" width="100%" required="true" textAlign="{viewModel>/textAlignment}" textDirection="Inherit"
+											visible="true" wrapping="true" class="blackLabel customMarginRemarks"/>
+									</form:label>
+									<f:fields>
+										<HBox justifyContent="SpaceAround" alignContent="Center" alignItems="Center">
+											<items>
+												<Input placeholder="PO Box"></Input>
+												<Input placeholder="Town" class="sapUiTinyMarginBegin"></Input>
+											</items>
+										</HBox>
+									</f:fields>
+								</f:FormElement>
+							</f:formElements>
+						</f:FormContainer>
+						<f:FormContainer>
+							<f:title>
+								<core:Title text="Contact Details" emphasized="true" level="H3"></core:Title>
+							</f:title>
+							<f:formElements class="sapUiMarginTopBottom">
+								<f:FormElement class="sapUiMarginTopBottom">
+									<form:label>
+										<Label text="Email" design="Bold" width="100%" required="true" textAlign="{viewModel>/textAlignment}" textDirection="Inherit"
+											visible="true" wrapping="true" class="blackLabel"/>
+									</form:label>
+									<f:fields>
+										<Input placeholder="E-Mail"></Input>
+									</f:fields>
+								</f:FormElement>
+								<f:FormElement class="sapUiMarginTopBottom">
+									<form:label>
+										<Label text="Telephone Number" design="Bold" width="100%" required="true" textAlign="{viewModel>/textAlignment}" textDirection="Inherit"
+											visible="true" wrapping="true" class="blackLabel"/>
+									</form:label>
+									<f:fields>
+										<Input placeholder=""></Input>
+									</f:fields>
+								</f:FormElement>
+							</f:formElements>
+						</f:FormContainer>
+					</f:formContainers>
+				</f:Form>
+				
+			</content>
+			<footer>
+				<Toolbar>
+					<Button type="Default" text="Search" press="_onSearch" icon="sap-icon://search"></Button>
+					<ToolbarSpacer/>
+					<Button type="Emphasized" text="Save " press="_onClose" icon="sap-icon://accept"></Button>
+					<Button type="Reject" text="Cancel" press="_onClose" icon="sap-icon://reject"></Button>
+				</Toolbar>
+			</footer>
+		</Page>
+		<customHeader>
+			<Bar>
+				<contentLeft></contentLeft>
+				<contentMiddle>
+					<Title text="Create New Patient"/>
+				</contentMiddle>
+				<contentRight>
+					<!--<Button icon="sap-icon://decline" press="_onValueHelpClose" class="sapUiSizeCompact"></Button>-->
+					<Button icon="sap-icon://decline" press="_onPreviewClose" class="sapUiSizeCompact"></Button>
+				</contentRight>
+			</Bar>
+		</customHeader>
+	</Dialog>
+</core:FragmentDefinition>

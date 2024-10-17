@@ -1,0 +1,31 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:uxap="sap.uxap"  xmlns:layout="sap.ui.layout">
+	<Dialog contentWidth="50%" contentHeight="30%" title="Patient Details" showHeader="true">
+		<uxap:ObjectPageLayout useIconTabBar="true" showTitleInHeaderContent="true">
+			<uxap:headerTitle>
+				<uxap:ObjectPageDynamicHeaderTitle>
+					<uxap:expandedHeading>
+						<Title text="{patientDetailsModel>/patientName}" wrapping="true"/>
+					</uxap:expandedHeading>
+					<uxap:snappedHeading>
+						<FlexBox fitContainer="true" alignItems="Center">
+							<Avatar src="sap-icon://employee-pane" class="sapUiTinyMarginEnd"/>
+							<Title text="{patientDetailsModel>/patientName}" wrapping="true"/>
+						</FlexBox>
+					</uxap:snappedHeading>
+				</uxap:ObjectPageDynamicHeaderTitle>
+			</uxap:headerTitle>
+			<uxap:headerContent>
+				<FlexBox wrap="Wrap" fitContainer="true">
+					<Avatar class="sapUiSmallMarginEnd" src="sap-icon://employee-pane" displaySize="L"/>
+					<layout:VerticalLayout class="sapUiSmallMarginBeginEnd">
+						<Label text="Date Of Birth: {patientDetailsModel>/dateOfBirth}"/>
+						<Label text="Gender: {patientDetailsModel>/gender}"/>
+						<Link text="Admission Date - {patientDetailsModel>/bedStartTime}"/>
+						<Link text="Discharge Date - {patientDetailsModel>/bedEndTime}"/>
+					</layout:VerticalLayout>
+				</FlexBox>
+			</uxap:headerContent>
+		</uxap:ObjectPageLayout>
+		
+	</Dialog>
+</core:FragmentDefinition>
