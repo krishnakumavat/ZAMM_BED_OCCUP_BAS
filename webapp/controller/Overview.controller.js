@@ -13,39 +13,39 @@ sap.ui.define([
 	"ZAMM_BED_OCCUP/util/Formatter",
 	"sap/gantt/misc/Format",
 	"sap/ui/core/Fragment"
-], function(Controller, JSONModel, ResourceModel, MessageBox, Filter, FilterOperator,
+], function (Controller, JSONModel, ResourceModel, MessageBox, Filter, FilterOperator,
 	FilterType, lodash, momentjs, DataHelper, UIHelper, Formatter, Format, Fragment) {
 	"use strict";
 	var oController;
 	return Controller.extend("ZAMM_BED_OCCUP.controller.Overview", {
-		hideBusyIndicator: function() {
+		hideBusyIndicator: function () {
 			sap.ui.core.BusyIndicator.hide();
 		},
-		showBusyIndicator: function() {
+		showBusyIndicator: function () {
 			sap.ui.core.BusyIndicator.show();
 			sap.ui.core.BusyIndicator.show(0);
 		},
-		createLocalModel: function(modelName, data) {
+		createLocalModel: function (modelName, data) {
 			let model = new JSONModel();
 			model.setData(data);
 			model.setSizeLimit(data.length);
 			this.getView().setModel(model, modelName);
 		},
-		_extractPatientInfo: function(title) {
+		_extractPatientInfo: function (title) {
 			let _text = title;
 			let _regex = /(\w+ \w+) \((\d+) yrs\) (\w+)/;
 			let match = _text.match(_regex);
 			if (match) {
 				return {
-					"patientName":match[1],
-					"age":match[2],
-					"gender":match[3]
+					"patientName": match[1],
+					"age": match[2],
+					"gender": match[3]
 				}
 			} else {
 				console.log("No match found.");
 			}
 		},
-		_getPatientDetailsFragment: function(patientDetailsModel) {
+		_getPatientDetailsFragment: function (patientDetailsModel) {
 			var that = this;
 			if (!this._patientDetailsFragment) {
 				this._patientDetailsFragment = sap.ui.xmlfragment("Patient Details", "ZAMM_BED_OCCUP.view.fragments.patientDetails", this);
@@ -54,14 +54,14 @@ sap.ui.define([
 			this._patientDetailsFragment.setModel(patientDetailsModel, "patientDetailsModel");
 			return this._patientDetailsFragment;
 		},
-		_getCreateNewRecordFragment: function() {
+		_getCreateNewRecordFragment: function () {
 			var that = this;
 			if (!this._createNewRecordFragment) {
 				this._createNewRecordFragment = sap.ui.xmlfragment("Create Record", "ZAMM_BED_OCCUP.view.fragments.createNewRecord", this);
 			}
 			return this._createNewRecordFragment;
 		},
-		_getPatientDetailPopover: function(_patientName, oShape, oEvent) {
+		_getPatientDetailPopover: function (_patientName, oShape, oEvent) {
 			//this.iPopoverOffsetX = oEvent.getParameter("popoverOffsetX");
 			var oPosition = oShape.$().offset();
 			var iLeft = Number(oPosition.left);
@@ -73,7 +73,7 @@ sap.ui.define([
 				Fragment.load({
 					name: "ZAMM_BED_OCCUP.view.fragments.patientDetails",
 					type: "XML"
-				}).then(function(oPopover) {
+				}).then(function (oPopover) {
 					this._oPopover = oPopover;
 					this._oPopover.setModel(new JSONModel(), "popover");
 					this.getView().addDependent(this._oPopover);
@@ -93,7 +93,7 @@ sap.ui.define([
 				this._oPopover.setOffsetX(this.leftPosition).openBy(oShape);
 			}
 		},
-		_generateFloors: function() {
+		_generateFloors: function () {
 			let _arr = [];
 			_arr.push({
 				'id': 'F21IUAMC',
@@ -181,7 +181,7 @@ sap.ui.define([
 			});
 			return _arr;
 		},
-		getConstants: function(variable) {
+		getConstants: function (variable) {
 			switch (variable) {
 				case "language1": //1 Character language
 					let _language1 = sap.ui.getCore().getConfiguration().getLanguage().split("-")[0].toUpperCase();
@@ -201,13 +201,13 @@ sap.ui.define([
 					break;
 			}
 		},
-		_handleEscape: function(oEvent) {
+		_handleEscape: function (oEvent) {
 			oEvent.reject();
 		},
 		/*Default Methods*/
-		onInit: function() {
+		onInit: function () {
 			let that = this;
-			
+
 			oController = this;
 			moment.updateLocale('en', {
 				week: {
@@ -215,55 +215,138 @@ sap.ui.define([
 				}
 			});
 		},
-		onBeforeRendering: function() {
+		onBeforeRendering: function () {
 
 		},
-		onAfterRendering: function() {
+		onAfterRendering: function () {
 			let that = this;
 			that._initModels();
 		},
-		onExit: function() {
+		onExit: function () {
 
 		},
-		fnTimeConverter: function(sTimestamp) {
+		fnTimeConverter: function (sTimestamp) {
 			return Format.abapTimestampToDate(sTimestamp);
 		},
-		_initModels: function() {
+		_initModels: function () {
 			let that = this;
 			let _arr = [];
 
 			let viewModel = new JSONModel();
 			//viewModel.setProperty("/axisStartTime", moment(new Date()).format("YYYYMMDD000000"));
 			//viewModel.setProperty("/axisEndTime", UIHelper._calculateDate(new Date(), true, '31', 'days', 'YYYYMMDD000000', true));
-			viewModel.setProperty("/totalAxisStart", moment().startOf('year').format("YYYYMMDD000000"));
-			viewModel.setProperty("/totalAxisEnd", moment().endOf('year').format("YYYYMMDD000000"));
-			viewModel.setProperty("/axisStartTime", moment().startOf('month').format("YYYYMMDD000000"));
-			viewModel.setProperty("/axisEndTime", moment().endOf('month').format("YYYYMMDD000000"));
-			//viewModel.setProperty("/axisStartTime", "20230601000000");
-			//viewModel.setProperty("/axisEndTime", "20230630000000");
-			viewModel.setProperty("/floorKey", that._generateFloors()[0].id);
-			viewModel.setProperty("/floorKeyText", that._generateFloors()[0].text)
-			that.getView().setModel(viewModel, "viewModel");
-			//let treeTableModel = new JSONModel(sap.ui.require.toUrl("ZAMM_BED_OCCUP/data/data.json"));
-			let treeTableModel = new JSONModel();
-			let _treeData = DataHelper._getBedData(that._generateFloors()[0].id);
-			treeTableModel.setData(_treeData);
-			that.getView().setModel(treeTableModel, "treeTableModel");
-			that.getView().setModel(treeTableModel);
-			// let floorModel = new JSONModel();
-			// floorModel.setData()
 
-			let legendModel = new JSONModel();
-			legendModel.setData(DataHelper._getDepartmentLegendColors());
-			that.getView().setModel(legendModel, "legendModel");
+			var oModel1 = this.getOwnerComponent().getModel();
+			var oModelFlr_Data = new sap.ui.model.odata.ODataModel(oModel1.sServiceUrl, true);
+			oModelFlr_Data.setUseBatch(false);
+			var sPathGUID = "/Occupany_rooms_bedsSet";
+			oModelFlr_Data.read(sPathGUID, {
 
-			let patientDetailsModel = new JSONModel();
-			that.getView().setModel(patientDetailsModel, "patientDetailsModel");
+				success: function (oData1, oResponse) {
+					
+					viewModel.setProperty("/totalAxisStart", moment().startOf('year').format("YYYYMMDD000000"));
+					viewModel.setProperty("/totalAxisEnd", moment().endOf('year').format("YYYYMMDD000000"));
+					viewModel.setProperty("/axisStartTime", moment().startOf('month').format("YYYYMMDD000000"));
+					viewModel.setProperty("/axisEndTime", moment().endOf('month').format("YYYYMMDD000000"));
+					//viewModel.setProperty("/axisStartTime", "20230601000000");
+					//viewModel.setProperty("/axisEndTime", "20230630000000");
+					viewModel.setProperty("/floorKey", oData1.results[0].Ishid);
+					viewModel.setProperty("/floorKeyText", that._generateFloors()[0].text)
+					that.getView().setModel(viewModel, "viewModel");
 
-			that.createLocalModel("floorModel", that._generateFloors());
+					let treeData = that.FloorStruct(oData1.results);
+					let treeTableModel = new sap.ui.model.json.JSONModel();
+					treeTableModel.setData(treeData);
+					that.getView().setModel(treeTableModel, "treeTableModel");
+					that.getView().setModel(treeTableModel);
+					//let treeTableModel = new JSONModel(sap.ui.require.toUrl("ZAMM_BED_OCCUP/data/data.json"));
+					//let treeTableModel = new JSONModel();
+					//let _treeData = DataHelper._getBedData(oData1.results[0].Ishid);
+					//treeTableModel.setData(_treeData);
+					//that.getView().setModel(treeTableModel, "treeTableModel");
+
+					// let floorModel = new JSONModel();
+					// floorModel.setData()
+
+					let legendModel = new JSONModel();
+					legendModel.setData(DataHelper._getDepartmentLegendColors());
+					that.getView().setModel(legendModel, "legendModel");
+
+					let patientDetailsModel = new JSONModel();
+					that.getView().setModel(patientDetailsModel, "patientDetailsModel");
+
+					that.createLocalModel("floorModel", that._generateFloors());
+				},
+				error: function (oError) {
+
+				}
+			});
+
+		},
+		FloorStruct: function (data) {
+
+			let treeData = {};
+
+
+
+			let tree = [];
+
+
+			let floors = {};
+			data.forEach(item => {
+				if (!floors[item.Ishid]) {
+					floors[item.Ishid] = [];
+				}
+				floors[item.Ishid].push(item);
+			});
+
+
+			Object.keys(floors).forEach(Ishid => {
+				let floorNode = {
+					root: {
+						children: []
+					}
+
+				};
+
+
+				let rooms = {};
+				floors[Ishid].forEach(item => {
+					if (!rooms[item.Ishid_Rm]) {
+						rooms[item.Ishid_Rm] = [];
+					}
+					rooms[item.Ishid_Rm].push(item);
+				});
+
+
+				Object.keys(rooms).forEach(Ishid_Rm => {
+					let roomNode = {
+						id: Ishid_Rm,
+						children: []
+					};
+
+					rooms[Ishid_Rm].forEach(item => {
+						let bedNode = {
+							id: item.Ishid_Bd
+						};
+						roomNode.children.push(bedNode);
+					});
+
+					floorNode.root.children.push(roomNode);
+				});
+
+				tree.push(floorNode);
+			});
+
+			return tree;
+
+
+
+
+
 		},
 		//Screen Interactions
-		_onFloorSelect: function(oEvent) {
+		_onFloorSelect: function (oEvent) {
 			let that = this;
 			let _selectedItem = oEvent.getParameter("selectedItem");
 			let _data = oEvent.getSource().getSelectedItem().getBindingContext("floorModel").getObject();
@@ -273,14 +356,14 @@ sap.ui.define([
 			that.getView().getModel("treeTableModel").setData(_treeData);
 
 		},
-		_onShapeHover: function(oEvent) {
+		_onShapeHover: function (oEvent) {
 			// let that = this;
 			// var oShape = oEvent.getParameter("shape");
 			// console.log(oShape.getTitle());
 			// var oPosition = oEvent.getSource().$().offset();
 			// this._getPatientDetailPopover(oShape.getTitle(), oShape, oEvent);	
 		},
-		_onShapeDrop:function(oEvent){
+		_onShapeDrop: function (oEvent) {
 			let that = this;
 			var oDraggedShapeDates = oEvent.getParameter("draggedShapeDates"),
 				oModel = this.getView().getModel(),
@@ -292,15 +375,15 @@ sap.ui.define([
 				iTimeDiff = oNewDateTime.getTime() - oOldTimes.time.getTime(),
 				oTargetRow = oEvent.getParameter("targetRow"),
 				oTargetShape = oEvent.getParameter("targetShape");
-				oModel.setProperty(sPath + "/startTime", new Date(oOldTimes.time.getTime() + iTimeDiff));
-				oModel.setProperty(sPath + "/endTime", new Date(oOldTimes.endTime.getTime() + iTimeDiff));
-			
+			oModel.setProperty(sPath + "/startTime", new Date(oOldTimes.time.getTime() + iTimeDiff));
+			oModel.setProperty(sPath + "/endTime", new Date(oOldTimes.endTime.getTime() + iTimeDiff));
+
 			let _changedObject = oModel.getProperty(sPath);
 			let _patientInfo = that._extractPatientInfo(_changedObject.title)
-			sap.m.MessageBox.information("Planned Transfer initiated for " + _patientInfo.patientName + " from " + moment(_changedObject.startTime).format("DD.MM.YYYY") + " to " + 
-			moment(_changedObject.endTime).format("DD.MM.YYYY"));
+			sap.m.MessageBox.information("Planned Transfer initiated for " + _patientInfo.patientName + " from " + moment(_changedObject.startTime).format("DD.MM.YYYY") + " to " +
+				moment(_changedObject.endTime).format("DD.MM.YYYY"));
 		},
-		_onShapeResize:function(oEvent){
+		_onShapeResize: function (oEvent) {
 			let that = this;
 			var oShape = oEvent.getParameter("shape"),
 				aOldTime = oEvent.getParameter("oldTime"),
@@ -310,25 +393,25 @@ sap.ui.define([
 				oShapeInfo = sap.gantt.misc.Utility.parseUid(sShapeId),
 				sPath = oShapeInfo.shapeDataName;
 			oModel.setProperty(sPath + "/startTime", aNewTimes[0]);
-			oModel.setProperty(sPath + "/endTime", aNewTimes[1]);	
+			oModel.setProperty(sPath + "/endTime", aNewTimes[1]);
 			let _changedObject = oModel.getProperty(sPath);
 			let _patientInfo = that._extractPatientInfo(_changedObject.title)
 			// oShape.setTime(aNewTimes[0]);
 			// oShape.setEndTime(aNewTimes[1]);
 			let _msg = "";
-			if(aOldTime[0] !== aNewTimes[0]){
+			if (aOldTime[0] !== aNewTimes[0]) {
 				_msg = "Start Time Changed";
 			}
-			else if(aOldTime[1] !== aNewTimes[1]){
+			else if (aOldTime[1] !== aNewTimes[1]) {
 				_msg = "End Time Changed";
 			}
 			sap.m.MessageToast.show(_msg);
 		},
-		_onClose:function(oEvent){
-			oEvent.getSource().getParent().getParent().getParent().close();	
+		_onClose: function (oEvent) {
+			oEvent.getSource().getParent().getParent().getParent().close();
 		},
-		
-		_onShowPatientDetails: function(oEvent) {
+
+		_onShowPatientDetails: function (oEvent) {
 			let that = this;
 			var oShape = oEvent.getParameter("shape");
 			let _patientDetailsModel = new sap.ui.model.json.JSONModel();
@@ -341,7 +424,7 @@ sap.ui.define([
 			_patientDetailsModel.setProperty("/dateOfBirth", moment(DataHelper._generateRandomDOB(Number(_patientInfo.age))).format("DD.MM.YYYY"));
 			this._getPatientDetailsFragment(_patientDetailsModel).open();
 		},
-		_onCreateRecord: function(oEvent) {
+		_onCreateRecord: function (oEvent) {
 			let that = this;
 			that._getCreateNewRecordFragment().open();
 		}
