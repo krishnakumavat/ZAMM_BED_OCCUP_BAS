@@ -256,7 +256,7 @@ sap.ui.define([
 
 					let treeData = that.FloorStruct(oData1.results);
 					let treeTableModel = new sap.ui.model.json.JSONModel();
-					treeTableModel.setData(treeData);
+					treeTableModel.setData(treeData[0]);
 					that.getView().setModel(treeTableModel, "treeTableModel");
 					that.getView().setModel(treeTableModel);
 					//let treeTableModel = new JSONModel(sap.ui.require.toUrl("ZAMM_BED_OCCUP/data/data.json"));
@@ -274,8 +274,20 @@ sap.ui.define([
 
 					let patientDetailsModel = new JSONModel();
 					that.getView().setModel(patientDetailsModel, "patientDetailsModel");
-
-					that.createLocalModel("floorModel", that._generateFloors());
+					var aFloortemp = []
+					var aFloorArray = []
+					oData1.results.forEach(function(floor){
+						aFloortemp.push(floor.Ishid);
+						
+					})
+					var aFloortemp1 = _.uniq(aFloortemp,false);
+					aFloortemp1.forEach(function(unqfloor){
+						aFloorArray.push({
+									'id': unqfloor,
+									'text': unqfloor
+								});
+					})
+					that.createLocalModel("floorModel", aFloorArray);
 				},
 				error: function (oError) {
 

@@ -98,7 +98,7 @@
 								<table:TreeTable selectionMode="Single" visibleRowCountMode="Auto" minAutoRowCount="12" selectionBehaviour="RowSelector"
 									enableColumnReordering="false" rows="{ path:'/root', parameters:{ arrayNames:['children'], numberOfExpandedLevels:1 } }">
 									<table:columns>
-										<table:Column label="{viewModel>/floorKeyText}" template="text" width="12rem"></table:Column>
+										<table:Column label="{viewModel>/floorKeyText}" template="id" width="12rem"></table:Column>
 										<table:Column label="Overlap" template="text" width="2.5rem">
 											<table:template>
 												<core:Icon src="sap-icon://alert" color="red" visible="{isOverlap}"></core:Icon>
