@@ -243,6 +243,7 @@ sap.ui.define([
 			oModelFlr_Data.read(sPathGUID, {
 
 				success: function (oData1, oResponse) {
+					
 					viewModel.setProperty("/totalAxisStart", moment().startOf('year').format("YYYYMMDD000000"));
 					viewModel.setProperty("/totalAxisEnd", moment().endOf('year').format("YYYYMMDD000000"));
 					viewModel.setProperty("/axisStartTime", moment().startOf('month').format("YYYYMMDD000000"));
