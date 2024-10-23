@@ -240,6 +240,7 @@ sap.ui.define([
 			var oModel1 = this.getOwnerComponent().getModel();
 			var oModelFlr_Data = new sap.ui.model.odata.ODataModel(oModel1.sServiceUrl, true);
 			oModelFlr_Data.setUseBatch(false);
+			sap.ui.core.BusyIndicator.show();
 			var sPathGUID = "/Occupany_rooms_bedsSet";
 			oModelFlr_Data.read(sPathGUID, {
 				urlParameters:{
@@ -247,7 +248,10 @@ sap.ui.define([
 				},
 
 				success: function (oData1, oResponse) {
+					sap.ui.core.BusyIndicator.hide();
 					let par1 = [];
+					let par2  = [];
+					let afilter = [];
 					
 					viewModel.setProperty("/totalAxisStart", moment().startOf('year').format("YYYYMMDD000000"));
 					viewModel.setProperty("/totalAxisEnd", moment().endOf('year').format("YYYYMMDD000000"));
@@ -262,8 +266,16 @@ sap.ui.define([
 						if (res.Falnr) {
 						par1.push(res.Falnr);
 						}
+						if(res.Patnr){
+							par2.push(res.Patnr);
+						}
 
 					});
+					if (par2.length > 0) {
+						par2.forEach(function (pat) {
+							afilter.push(new Filter('Patnr', FilterOperator.EQ, pat));
+						});
+					}
 					var promise1 = new Promise(function(resolve, reject) {
 						oModelFlr_Data.read("/patientDetailsSet", {
                         
@@ -276,6 +288,55 @@ sap.ui.define([
 									if (res.Falnr && par1.includes(res.Falnr)) {
 						
 									  targetArray.push(res); 
+								    }
+								  });
+						
+							},
+							error:function(oErr){
+								reject(oErr);
+							}
+						
+					  });
+					  
+					});
+					
+					var promise2 = new Promise(function(resolve, reject) {
+						oModelFlr_Data.read("/patientAllergySet", {
+                        
+                            urlParameters: {
+                                "sap-client": "110"
+                            },
+							filters:afilter ,
+							success: function (oData1, oResponse) {
+								var targetArray2 = [];
+								oData1.results.forEach(function(res) {
+									if (res.Patnr && par2.includes(res.Patnr)) {
+						
+									  targetArray2.push(res); 
+								    }
+								  });
+						
+							},
+							error:function(oErr){
+								reject(oErr);
+							}
+						
+					  });
+					  
+					});
+					var promise3 = new Promise(function(resolve, reject) {
+						oModelFlr_Data.read("/patientRiskFactorsSet", {
+                        
+                            urlParameters: {
+                                "sap-client": "110"
+                            },
+							filters:afilter ,
+							success: function (oData1, oResponse) {
+								var targetArray3 = [];
+								oData1.results.forEach(function(res) {
+									if (res.Patnr && par2.includes(res.Patnr)) {
+						
+									  targetArray3.push(res); 
 								    }
 								  });
 						
