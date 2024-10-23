@@ -84,16 +84,17 @@
 							                       shapeResize="_onShapeResize"
 												   shapeSelectionSettings="{color:'grey', strokeWidth:2, strokeDasharray:'5,1', fillOpacity: 0.8, shapeColor:'sapUiChartPaletteSemanticGoodLight2'}"
 												   shapeSelectionMode="Single">
-							<!-- <gantt:axisTimeStrategy>
-								<axistime:ProportionZoomStrategy>
-									<axistime:totalHorizon>
-										<config:TimeHorizon startTime="{viewModel>/totalAxisStart}" endTime="{viewModel>/totalAxisEnd}"></config:TimeHorizon>
-									</axistime:totalHorizon>
-									<axistime:visibleHorizon>
-										<config:TimeHorizon startTime="{viewModel>/axisStartTime}" endTime="{viewModel>/axisEndTime}"></config:TimeHorizon>
-									</axistime:visibleHorizon>
-								</axistime:ProportionZoomStrategy>
-							</gantt:axisTimeStrategy> -->
+					<gantt:axisTimeStrategy>
+                      <axistime:ProportionZoomStrategy>
+                          <axistime:totalHorizon>
+                            <!-- <config:TimeHorizon startTime="{viewModel>/totalAxisStart}" endTime="{viewModel>/totalAxisEnd}"></config:TimeHorizon> -->
+                           </axistime:totalHorizon>
+	
+                           <axistime:visibleHorizon>
+                            <!-- <config:TimeHorizon startTime="{viewModel>/axisStartTime}" endTime="{viewModel>/axisEndTime}"></config:TimeHorizon> -->
+                           </axistime:visibleHorizon>
+                    </axistime:ProportionZoomStrategy> 
+                </gantt:axisTimeStrategy>
 							<gantt:table>
 								<table:TreeTable selectionMode="Single" visibleRowCountMode="Auto" minAutoRowCount="12" selectionBehaviour="RowSelector"
 									enableColumnReordering="false" rows="{ path:'/root', parameters:{ arrayNames:['children'], numberOfExpandedLevels:1 } }">

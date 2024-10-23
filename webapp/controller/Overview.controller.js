@@ -231,6 +231,7 @@ sap.ui.define([
 		_initModels: function () {
 			let that = this;
 			let _arr = [];
+			var aPromise = [];
 
 			let viewModel = new JSONModel();
 			//viewModel.setProperty("/axisStartTime", moment(new Date()).format("YYYYMMDD000000"));
@@ -241,8 +242,12 @@ sap.ui.define([
 			oModelFlr_Data.setUseBatch(false);
 			var sPathGUID = "/Occupany_rooms_bedsSet";
 			oModelFlr_Data.read(sPathGUID, {
+				urlParameters:{
+					"sap=client":"110"
+				},
 
 				success: function (oData1, oResponse) {
+					let par1 = [];
 					
 					viewModel.setProperty("/totalAxisStart", moment().startOf('year').format("YYYYMMDD000000"));
 					viewModel.setProperty("/totalAxisEnd", moment().endOf('year').format("YYYYMMDD000000"));
@@ -251,8 +256,38 @@ sap.ui.define([
 					//viewModel.setProperty("/axisStartTime", "20230601000000");
 					//viewModel.setProperty("/axisEndTime", "20230630000000");
 					viewModel.setProperty("/floorKey", oData1.results[0].Ishid);
-					viewModel.setProperty("/floorKeyText", that._generateFloors()[0].text)
+					viewModel.setProperty("/floorKeyText", oData1.results[0].Orgpfkb)
 					that.getView().setModel(viewModel, "viewModel");
+					oData1.results.forEach(function(res){
+						if (res.Falnr) {
+						par1.push(res.Falnr);
+						}
+
+					});
+					var promise1 = new Promise(function(resolve, reject) {
+						oModelFlr_Data.read("/patientDetailsSet", {
+                        
+                            urlParameters: {
+                                "sap-client": "110"
+                            },
+							success: function (oData1, oResponse) {
+								var targetArray = [];
+								oData1.results.forEach(function(res) {
+									if (res.Falnr && par1.includes(res.Falnr)) {
+						
+									  targetArray.push(res); 
+								    }
+								  });
+						
+							},
+							error:function(oErr){
+								reject(oErr);
+							}
+						
+					  });
+					  
+					});
+					
 
 					let treeData = that.FloorStruct(oData1.results);
 					let treeTableModel = new sap.ui.model.json.JSONModel();
