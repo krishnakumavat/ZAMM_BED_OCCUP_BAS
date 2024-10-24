@@ -490,7 +490,8 @@ sap.ui.define([
 							gender: item.Sex
 						};
 
-						roomNode.children[subNode].push(subNode);
+						//roomNode.children[subNode].push(subNode);
+						roomNode.children[0].subtask.push(subNode)
 					});
 
 					floorNode.root.children.push(roomNode);
