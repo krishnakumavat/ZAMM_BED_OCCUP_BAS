@@ -442,7 +442,9 @@ sap.ui.define([
 			Object.keys(floors).forEach(Ishid => {
 				let floorNode = {
 					root: {
-						children: []
+						children: [
+
+						]
 					}
 
 				};
@@ -460,18 +462,40 @@ sap.ui.define([
 				Object.keys(rooms).forEach(Ishid_Rm => {
 					let roomNode = {
 						id: Ishid_Rm,
-						children: []
+						children: [{
+							subtask: []
+						}
+
+
+						]
 					};
+
+
 
 					rooms[Ishid_Rm].forEach(item => {
 						let bedNode = {
-							id: item.Ishid_Bd
+							id: item.Ishid_Bd,
+							children: [
+
+							]
 						};
+
 						roomNode.children.push(bedNode);
+					});
+					rooms[Ishid_Rm].forEach(item => {
+						let subNode = {
+							id: item.Falnr,
+							fillColor: "#FF0000",
+							title: item.Patientname,
+							gender: item.Sex
+						};
+
+						roomNode.children[subNode].push(subNode);
 					});
 
 					floorNode.root.children.push(roomNode);
 				});
+
 
 				tree.push(floorNode);
 			});
