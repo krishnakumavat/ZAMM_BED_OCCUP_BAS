@@ -422,6 +422,7 @@ sap.ui.define([
 
 		},
 		FloorStruct: function (data) {
+			let that = this;
 
 			let treeData = {};
 
@@ -462,8 +463,7 @@ sap.ui.define([
 				Object.keys(rooms).forEach(Ishid_Rm => {
 					let roomNode = {
 						id: Ishid_Rm,
-						children: [
-						]
+						children: []
 					};
 
 					rooms[Ishid_Rm].forEach(item => {
@@ -476,15 +476,19 @@ sap.ui.define([
 					});
 					rooms[Ishid_Rm].forEach(item => {
 						let subNode = {
-							id: item.Falnr,
+							id: item.Patnr,
 							fillColor: "#FF0000",
-							title: item.Patientname,
-							gender: item.Sex
+							title: item.Patientname,        
+							titleColor: "#696969",
+							gender: item.Sex,
+							startTime: moment(item.Admissiondate).add(that._generateRandomNumberInRange(1,15), 'days').format("YYYYMMDD090000"),//"20230601090000",
+							endTime: moment(item.Dischargedate).add(that._generateRandomNumberInRange(15,25), 'days').format("YYYYMMDD090000"),//"20230606090000"
 						};
 
 						//roomNode.children[subNode].push(subNode);
 						roomNode.children[0].subtask.push(subNode)
 					});
+					//item.Patientname,
 
 					floorNode.root.children.push(roomNode);
 				});
@@ -499,6 +503,9 @@ sap.ui.define([
 
 
 
+		},
+		_generateRandomNumberInRange: function(min, max) {
+			return (Math.round((Math.random() * (max - min) + min) / 10) * 10).toString();
 		},
 		//Screen Interactions
 		_onFloorSelect: function (oEvent) {

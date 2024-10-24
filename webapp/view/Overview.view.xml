@@ -122,14 +122,14 @@
 										</table:Column>
 									</table:columns>
 									<table:rowSettingsTemplate>
-										<gantt:GanttRowSettings rowId="{id}" shapes1="{path:'task', templateShareable:false}" shapes2="{path:'subtask', templateShareable:false}">
+										<gantt:GanttRowSettings rowId="{id}" shapes1="{path:'task', templateShareable:false}" shapes2="{path:'/subtask', templateShareable:false}">
 											<gantt:shapes1>
 												<shapes:Task time="{path:'startTime', formatter:'.fnTimeConverter'}" endTime="{path:'endTime', formatter:'.fnTimeConverter'}"
 													type="SummaryExpanded" color="sapUiAccent5" visible="false" enableDnd="true" draggable="true" resizable="true" selectable="true"/>
 											</gantt:shapes1>
 											<gantt:shapes2>
 												<gantt:BaseRectangle fill="{fillColor}" title="{title}" titleColor="{titleColor}" time="{path:'startTime', formatter:'.fnTimeConverter'}"
-													endTime="{path:'endTime', formatter:'.fnTimeConverter'}" hoverable="true" draggable="true" enableDnd="true" resizable="true" selectable="true"></gantt:BaseRectangle>
+													endTime="{path:'endTime', formatter:'.fnTimeConverter'}" hoverable="true" draggable="true" resizable="true" selectable="true"></gantt:BaseRectangle>
 											</gantt:shapes2>
 										</gantt:GanttRowSettings>
 									</table:rowSettingsTemplate>
