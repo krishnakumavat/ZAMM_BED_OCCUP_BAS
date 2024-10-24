@@ -122,7 +122,7 @@
 										</table:Column>
 									</table:columns>
 									<table:rowSettingsTemplate>
-										<gantt:GanttRowSettings rowId="{id}" shapes1="{path:'task', templateShareable:false}" shapes2="{path:'/subtask', templateShareable:false}">
+										<gantt:GanttRowSettings rowId="{id}" shapes1="{path:'task', templateShareable:false}" shapes2="{path:'subtask', templateShareable:false}">
 											<gantt:shapes1>
 												<shapes:Task time="{path:'startTime', formatter:'.fnTimeConverter'}" endTime="{path:'endTime', formatter:'.fnTimeConverter'}"
 													type="SummaryExpanded" color="sapUiAccent5" visible="false" enableDnd="true" draggable="true" resizable="true" selectable="true"/>
