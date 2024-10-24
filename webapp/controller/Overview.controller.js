@@ -462,22 +462,14 @@ sap.ui.define([
 				Object.keys(rooms).forEach(Ishid_Rm => {
 					let roomNode = {
 						id: Ishid_Rm,
-						children: [{
-							subtask: []
-						}
-
-
+						children: [
 						]
 					};
-
-
 
 					rooms[Ishid_Rm].forEach(item => {
 						let bedNode = {
 							id: item.Ishid_Bd,
-							children: [
-
-							]
+							subtask: []
 						};
 
 						roomNode.children.push(bedNode);
