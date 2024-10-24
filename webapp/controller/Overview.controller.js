@@ -229,9 +229,20 @@ sap.ui.define([
 			return Format.abapTimestampToDate(sTimestamp);
 		},
 		_initModels: function () {
+			sap.ui.core.BusyIndicator.show();
+			let that = this;
+			that.Occup_PatDetails();
+		},
+		Occup_PatDetails: function () {
 			let that = this;
 			let _arr = [];
-			var aPromise = [];
+			let par1 = [];
+			let par2 = [];
+			let afilter = [];
+			var targetArray = [];
+			var targetArray1 = [];
+			var targetArray2 = [];
+			var targetArray3 = [];
 
 			let viewModel = new JSONModel();
 			//viewModel.setProperty("/axisStartTime", moment(new Date()).format("YYYYMMDD000000"));
@@ -240,155 +251,174 @@ sap.ui.define([
 			var oModel1 = this.getOwnerComponent().getModel();
 			var oModelFlr_Data = new sap.ui.model.odata.ODataModel(oModel1.sServiceUrl, true);
 			oModelFlr_Data.setUseBatch(false);
-			sap.ui.core.BusyIndicator.show();
-			var sPathGUID = "/Occupany_rooms_bedsSet";
-			oModelFlr_Data.read(sPathGUID, {
-				urlParameters:{
-					"sap=client":"110"
-				},
+			var promise = new Promise(function (resolve, reject) {
 
-				success: function (oData1, oResponse) {
-					sap.ui.core.BusyIndicator.hide();
-					let par1 = [];
-					let par2  = [];
-					let afilter = [];
-					
-					viewModel.setProperty("/totalAxisStart", moment().startOf('year').format("YYYYMMDD000000"));
-					viewModel.setProperty("/totalAxisEnd", moment().endOf('year').format("YYYYMMDD000000"));
-					viewModel.setProperty("/axisStartTime", moment().startOf('month').format("YYYYMMDD000000"));
-					viewModel.setProperty("/axisEndTime", moment().endOf('month').format("YYYYMMDD000000"));
-					//viewModel.setProperty("/axisStartTime", "20230601000000");
-					//viewModel.setProperty("/axisEndTime", "20230630000000");
-					viewModel.setProperty("/floorKey", oData1.results[0].Ishid);
-					viewModel.setProperty("/floorKeyText", oData1.results[0].Orgpfkb)
-					that.getView().setModel(viewModel, "viewModel");
-					oData1.results.forEach(function(res){
-						if (res.Falnr) {
-						par1.push(res.Falnr);
-						}
-						if(res.Patnr){
-							par2.push(res.Patnr);
-						}
+				var sPathGUID = "/Occupany_rooms_bedsSet";
+				oModelFlr_Data.read(sPathGUID, {
+					urlParameters: {
+						"sap=client": "110"
+					},
 
-					});
-					if (par2.length > 0) {
-						par2.forEach(function (pat) {
-							afilter.push(new Filter('Patnr', FilterOperator.EQ, pat));
+					success: function (oData1, oResponse) {
+						sap.ui.core.BusyIndicator.hide();
+
+
+						viewModel.setProperty("/totalAxisStart", moment().startOf('year').format("YYYYMMDD000000"));
+						viewModel.setProperty("/totalAxisEnd", moment().endOf('year').format("YYYYMMDD000000"));
+						viewModel.setProperty("/axisStartTime", moment().startOf('month').format("YYYYMMDD000000"));
+						viewModel.setProperty("/axisEndTime", moment().endOf('month').format("YYYYMMDD000000"));
+						//viewModel.setProperty("/axisStartTime", "20230601000000");
+						//viewModel.setProperty("/axisEndTime", "20230630000000");
+						viewModel.setProperty("/floorKey", oData1.results[0].Ishid);
+						viewModel.setProperty("/floorKeyText", oData1.results[0].Orgpfkb)
+						that.getView().setModel(viewModel, "viewModel");
+						targetArray1.push(oData1.results);
+
+
+
+
+
+
+						let legendModel = new JSONModel();
+						legendModel.setData(DataHelper._getDepartmentLegendColors());
+						that.getView().setModel(legendModel, "legendModel");
+
+						let patientDetailsModel = new JSONModel();
+						that.getView().setModel(patientDetailsModel, "patientDetailsModel");
+						var aFloortemp = []
+						var aFloorArray = []
+						oData1.results.forEach(function (floor) {
+							aFloortemp.push(floor.Ishid);
+
+						})
+						var aFloortemp1 = _.uniq(aFloortemp, false);
+						aFloortemp1.forEach(function (unqfloor) {
+							aFloorArray.push({
+								'id': unqfloor,
+								'text': unqfloor
+							});
+						})
+						that.createLocalModel("floorModel", aFloorArray);
+						oData1.results.forEach(function (res) {
+							if (res.Falnr) {
+								par1.push(res.Falnr);
+							}
+							if (res.Patnr) {
+								par2.push(res.Patnr);
+							}
+
 						});
-					}
-					var promise1 = new Promise(function(resolve, reject) {
-						oModelFlr_Data.read("/patientDetailsSet", {
-                        
-                            urlParameters: {
-                                "sap-client": "110"
-                            },
-							success: function (oData1, oResponse) {
-								var targetArray = [];
-								oData1.results.forEach(function(res) {
-									if (res.Falnr && par1.includes(res.Falnr)) {
-						
-									  targetArray.push(res); 
-								    }
-								  });
-						
-							},
-							error:function(oErr){
-								reject(oErr);
-							}
-						
-					  });
-					  
-					});
-					
-					var promise2 = new Promise(function(resolve, reject) {
-						oModelFlr_Data.read("/patientAllergySet", {
-                        
-                            urlParameters: {
-                                "sap-client": "110"
-                            },
-							filters:afilter ,
-							success: function (oData1, oResponse) {
-								var targetArray2 = [];
-								oData1.results.forEach(function(res) {
-									if (res.Patnr && par2.includes(res.Patnr)) {
-						
-									  targetArray2.push(res); 
-								    }
-								  });
-						
-							},
-							error:function(oErr){
-								reject(oErr);
-							}
-						
-					  });
-					  
-					});
-					var promise3 = new Promise(function(resolve, reject) {
+						if (par2.length > 0) {
+							par2.forEach(function (pat) {
+								afilter.push(new Filter('Patnr', FilterOperator.EQ, pat));
+							});
+						}
 						oModelFlr_Data.read("/patientRiskFactorsSet", {
-                        
-                            urlParameters: {
-                                "sap-client": "110"
-                            },
-							filters:afilter ,
-							success: function (oData1, oResponse) {
-								var targetArray3 = [];
-								oData1.results.forEach(function(res) {
-									if (res.Patnr && par2.includes(res.Patnr)) {
-						
-									  targetArray3.push(res); 
-								    }
-								  });
-						
+
+							urlParameters: {
+								"sap-client": "110"
 							},
-							error:function(oErr){
-								reject(oErr);
-							}
-						
-					  });
-					  
-					});
-					
+							filters: afilter,
+							success: function (oData1, oResponse) {
+								//var targetArray3 = [];
+								oData1.results.forEach(function (res) {
+									if (res.Patnr && par2.includes(res.Patnr)) {
 
-					let treeData = that.FloorStruct(oData1.results);
-					let treeTableModel = new sap.ui.model.json.JSONModel();
-					treeTableModel.setData(treeData[0]);
-					that.getView().setModel(treeTableModel, "treeTableModel");
-					that.getView().setModel(treeTableModel);
-					//let treeTableModel = new JSONModel(sap.ui.require.toUrl("ZAMM_BED_OCCUP/data/data.json"));
-					//let treeTableModel = new JSONModel();
-					//let _treeData = DataHelper._getBedData(oData1.results[0].Ishid);
-					//treeTableModel.setData(_treeData);
-					//that.getView().setModel(treeTableModel, "treeTableModel");
-
-					// let floorModel = new JSONModel();
-					// floorModel.setData()
-
-					let legendModel = new JSONModel();
-					legendModel.setData(DataHelper._getDepartmentLegendColors());
-					that.getView().setModel(legendModel, "legendModel");
-
-					let patientDetailsModel = new JSONModel();
-					that.getView().setModel(patientDetailsModel, "patientDetailsModel");
-					var aFloortemp = []
-					var aFloorArray = []
-					oData1.results.forEach(function(floor){
-						aFloortemp.push(floor.Ishid);
-						
-					})
-					var aFloortemp1 = _.uniq(aFloortemp,false);
-					aFloortemp1.forEach(function(unqfloor){
-						aFloorArray.push({
-									'id': unqfloor,
-									'text': unqfloor
+										targetArray3.push(res);
+									}
 								});
-					})
-					that.createLocalModel("floorModel", aFloorArray);
-				},
-				error: function (oError) {
+								if ((targetArray.length !== 0) && (targetArray1.length !== 0) && (targetArray2.length !== 0) && (targetArray3.length !== 0)) {
+									that.mergeArraysById(targetArray, targetArray1, targetArray2, targetArray3);
+								}
 
+							},
+
+
+						});
+						oModelFlr_Data.read("/patientAllergySet", {
+
+							urlParameters: {
+								"sap-client": "110"
+							},
+							filters: afilter,
+							success: function (oData1, oResponse) {
+								//	var targetArray2 = [];
+								oData1.results.forEach(function (res) {
+									if (res.Patnr && par2.includes(res.Patnr)) {
+
+										targetArray2.push(res);
+									}
+								});
+								if ((targetArray.length !== 0) && (targetArray1.length !== 0) && (targetArray2.length !== 0) && (targetArray3.length !== 0)) {
+									that.mergeArraysById(targetArray, targetArray1, targetArray2, targetArray3);
+								}
+
+							},
+
+
+						});
+						oModelFlr_Data.read("/patientDetailsSet", {
+
+							urlParameters: {
+								"sap-client": "110"
+							},
+							success: function (oData1, oResponse) {
+
+								oData1.results.forEach(function (res) {
+									if (res.Falnr && par1.includes(res.Falnr)) {
+
+										targetArray.push(res);
+									}
+								});
+								if ((targetArray.length !== 0) && (targetArray1.length !== 0) && (targetArray2.length !== 0) && (targetArray3.length !== 0)) {
+									that.mergeArraysById(targetArray, targetArray1, targetArray2, targetArray3);
+								}
+
+
+							},
+
+
+						});
+
+
+
+
+					},
+					error: function (oErr) {
+						reject(oErr);
+					}
+
+				});
+
+			});
+		},
+		mergeArraysById: function (targetArray1, targetArray, targetArray2, targetArray3) {
+			let that = this;
+			const mergedArray = [];
+
+			targetArray[0].forEach(item1 => {
+				const id = item1.Falnr;
+				const id1 = item1.Patnr;
+				const matchItem1 = targetArray[0];
+				const matchingItem = targetArray1.find(item => item.Falnr === id);
+				const matchingItem2 = targetArray2.find(item => item.Patnr === id1);
+				const matchingItem3 = targetArray3.find(item => item.Patnr === id1);
+
+				if (matchingItem || matchingItem2 || matchingItem3 || matchItem1) {
+					mergedArray.push({
+						...item1,
+						...matchingItem,
+						...matchingItem2,
+						...matchingItem3
+					});
 				}
 			});
+			let treeData = that.FloorStruct(mergedArray);
+			let treeTableModel = new sap.ui.model.json.JSONModel();
+			treeTableModel.setData(treeData[0]);
+			that.getView().setModel(treeTableModel, "treeTableModel");
+			that.getView().setModel(treeTableModel);
+
 
 		},
 		FloorStruct: function (data) {
