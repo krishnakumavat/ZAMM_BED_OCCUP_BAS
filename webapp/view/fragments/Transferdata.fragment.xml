@@ -1,0 +1,41 @@
+<core:FragmentDefinition 
+    xmlns="sap.m" 
+    xmlns:core="sap.ui.core"
+    id="myFragment">
+    <Dialog contentWidth="75%" contentHeight="80%" >
+        <content>
+         <Panel headerText="Transfer Data">
+
+        <VBox>
+            <Label text="Transfer Type" width ="40%"/>
+            <ComboBox selectedKey="{/transferType}"> 
+                <core:Item key="..." text="..." />
+                </ComboBox>
+            <Label text="Date" width ="40%"/>
+            <DatePicker value="{/date}"  width="10rem"/>
+            
+            <Label text="Time" width ="40%"/>
+            <Input value="{/treatmentCategory}" width="10rem" />
+            <Label text="Treat. Category" width ="40%"/>
+            <Input value="{/treatmentCategory}" width="10rem" />
+            <Label text="Comment" width ="40%"/>
+            <TextArea value="{/comment}" width="10rem" />
+        </VBox>
+    </Panel>
+     <Panel headerText="Attending Physicians">
+        <VBox>
+            <Label text="Attn Phy" width ="40%"/>
+            
+            <Input value="{/treatmentCategory}" width="10rem"/>
+            
+        </VBox>
+    </Panel> 
+
+
+
+        </content>
+        <beginButton>
+            <Button text="Close" press="onCloseDialogTransData" />
+        </beginButton>
+    </Dialog>
+</core:FragmentDefinition>

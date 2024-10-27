@@ -10,6 +10,9 @@
 						<Label text="{i18n>title}" design="Bold"/>
 						<ToolbarSpacer/>
 						<Button icon="sap-icon://create" tooltip="Create" press="_onCreateRecord"/>
+						<Button icon="sap-icon://accounting-document-verification" tooltip="Transfer Data" press="_onTransferData"/>
+						<Button icon="sap-icon://request" tooltip="Planned Admission Req" press="_onPlannedAdmReq"/>
+						<Button icon="sap-icon://travel-request" tooltip="Planned Transfer req" press="_onPlannedTranReq"/>
 						<Button icon="sap-icon://account" tooltip="Create"/>
 					</OverflowToolbar>
 				</subHeader>

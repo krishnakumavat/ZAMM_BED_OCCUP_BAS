@@ -120,13 +120,48 @@
 						</f:FormContainer>
 					</f:formContainers>
 				</f:Form>
+				<Table items="{/yourDataModel}">
+					<columns>
+					  <Column>
+						<Text text="First Name" />
+					  </Column>
+					  <Column>
+						<Text text="Last Name" />
+					  </Column>
+					  <Column>
+						<Text text="Sex" />
+					  </Column>
+					  <Column>
+						<Text text="Birthdate" />
+					  </Column>
+					  <Column>
+						<Text text="Telephone" />
+					  </Column>
+					  <Column>
+						<Text text="Address" />
+					  </Column>
+					</columns>
+					<items>
+					  <ColumnListItem>
+						<cells>
+						  <Text text="{firstName}" />
+						  <Text text="{lastName}" />
+						  <Text text="{sex}" />
+						  <Text text="{birthdate}" />
+						  <Text text="{telephone}" />
+						  <Text text="{address}" />
+						</cells>
+					  </ColumnListItem>
+					</items>
+				  </Table>
+				
 				
 			</content>
 			<footer>
 				<Toolbar>
 					<Button type="Default" text="Search" press="_onSearch" icon="sap-icon://search"></Button>
 					<ToolbarSpacer/>
-					<Button type="Emphasized" text="Save " press="_onClose" icon="sap-icon://accept"></Button>
+					<Button type="Emphasized" text="Save " press="_onClose" icon="sap-icon://accept" enabled="false"></Button>
 					<Button type="Reject" text="Cancel" press="_onClose" icon="sap-icon://reject"></Button>
 				</Toolbar>
 			</footer>
@@ -139,7 +174,7 @@
 				</contentMiddle>
 				<contentRight>
 					<!--<Button icon="sap-icon://decline" press="_onValueHelpClose" class="sapUiSizeCompact"></Button>-->
-					<Button icon="sap-icon://decline" press="_onPreviewClose" class="sapUiSizeCompact"></Button>
+					<Button icon="sap-icon://decline" press="_onClose" class="sapUiSizeCompact"></Button>
 				</contentRight>
 			</Bar>
 		</customHeader>

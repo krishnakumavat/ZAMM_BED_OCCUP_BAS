@@ -239,6 +239,7 @@ sap.ui.define([
 			let par1 = [];
 			let par2 = [];
 			let afilter = [];
+			let bfilter = [];
 			var targetArray = [];
 			var targetArray1 = [];
 			var targetArray2 = [];
@@ -251,6 +252,7 @@ sap.ui.define([
 			var oModel1 = this.getOwnerComponent().getModel();
 			var oModelFlr_Data = new sap.ui.model.odata.ODataModel(oModel1.sServiceUrl, true);
 			oModelFlr_Data.setUseBatch(false);
+			bfilter.push(new Filter('Ishid', FilterOperator.EQ, "F21IUAMC"));
 			var promise = new Promise(function (resolve, reject) {
 
 				var sPathGUID = "/Occupany_rooms_bedsSet";
@@ -258,6 +260,7 @@ sap.ui.define([
 					urlParameters: {
 						"sap=client": "110"
 					},
+					filters:bfilter,
 
 					success: function (oData1, oResponse) {
 						sap.ui.core.BusyIndicator.hide();
@@ -589,6 +592,73 @@ sap.ui.define([
 		_onCreateRecord: function (oEvent) {
 			let that = this;
 			that._getCreateNewRecordFragment().open();
+		},
+		_onTransferData: function () {
+            if (!this._oDialog) {
+                this._oDialog = Fragment.load({
+                    id: this.getView().getId(),
+                    name: "ZAMM_BED_OCCUP.view.fragments.Transferdata",
+                    controller: this
+                }).then(function(oDialog) {
+                    this.getView().addDependent(oDialog);
+                    return oDialog;
+                }.bind(this));
+            }
+
+            this._oDialog.then(function(oDialog) {
+                oDialog.open();
+            });
+        },
+
+        onCloseDialogTransData: function () {
+            this._oDialog.then(function(oDialog) {
+                oDialog.close();
+            });
+        },
+	 _onPlannedAdmReq:function () {
+		if (!this._oAdmDialog) {
+			this._oAdmDialog = Fragment.load({
+				id: this.getView().getId(),
+				name: "ZAMM_BED_OCCUP.view.fragments.PlannedAdm",
+				controller: this
+			}).then(function(oDialog) {
+				this.getView().addDependent(oDialog);
+				return oDialog;
+			}.bind(this));
 		}
+
+		this._oAdmDialog.then(function(oDialog) {
+			oDialog.open();
+		});
+	},
+
+	onCloseDialogAdm: function () {
+		this._oAdmDialog.then(function(oDialog) {
+			oDialog.close();
+		});
+    },
+ _onPlannedTranReq:function () {
+	if (!this._oTranDialog) {
+		this._oTranDialog = Fragment.load({
+			id: this.getView().getId(),
+			name: "ZAMM_BED_OCCUP.view.fragments.PlannedTran",
+			controller: this
+		}).then(function(oDialog) {
+			this.getView().addDependent(oDialog);
+			return oDialog;
+		}.bind(this));
+	}
+
+	this._oTranDialog.then(function(oDialog) {
+		oDialog.open();
+	});
+},
+
+onCloseDialogTran: function () {
+	this._oTranDialog.then(function(oDialog) {
+		oDialog.close();
+	});
+   },
+
 	});
 });
