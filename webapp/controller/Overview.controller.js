@@ -232,9 +232,10 @@ sap.ui.define([
 			sap.ui.core.BusyIndicator.show();
 			let that = this;
 			that.FloorEntity();
-			that.Occup_PatDetails();
+			
 		},
 		FloorEntity:function(){
+			sap.ui.core.BusyIndicator.show();
 			let that = this;
 			let _arr = [];
 			let par1 = [];
@@ -257,6 +258,7 @@ sap.ui.define([
 							},
 							filters: afilter,
 							success: function (oData1, oResponse) {
+								sap.ui.core.BusyIndicator.hide();
 								var aFloortemp = []
 								var aFloorArray = []
 								oData1.results.forEach(function (floor) {
@@ -277,7 +279,8 @@ sap.ui.define([
 
 						});
 		},
-		Occup_PatDetails: function () {
+		Occup_PatDetails: function (id) {
+			sap.ui.core.BusyIndicator.show();
 			let that = this;
 			let _arr = [];
 			let par1 = [];
@@ -296,7 +299,7 @@ sap.ui.define([
 			var oModel1 = this.getOwnerComponent().getModel();
 			var oModelFlr_Data = new sap.ui.model.odata.ODataModel(oModel1.sServiceUrl, true);
 			oModelFlr_Data.setUseBatch(false);
-			bfilter.push(new Filter('Ishid', FilterOperator.EQ, "F21IUAMC"));
+			bfilter.push(new Filter('Ishid', FilterOperator.EQ, id));
 			var promise = new Promise(function (resolve, reject) {
 
 				var sPathGUID = "/Occupany_rooms_bedsSet";
@@ -559,10 +562,11 @@ sap.ui.define([
 			let that = this;
 			let _selectedItem = oEvent.getParameter("selectedItem");
 			let _data = oEvent.getSource().getSelectedItem().getBindingContext("floorModel").getObject();
-			that.getView().getModel("viewModel").setProperty("/floorKeyText", _data.text);
-
+			
+			that.Occup_PatDetails(_data.text);
+			/* 
 			let _treeData = DataHelper._getBedData(_data.id);
-			that.getView().getModel("treeTableModel").setData(_treeData);
+			that.getView().getModel("treeTableModel").setData(_treeData); */
 
 		},
 		_onShapeHover: function (oEvent) {
