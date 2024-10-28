@@ -231,7 +231,51 @@ sap.ui.define([
 		_initModels: function () {
 			sap.ui.core.BusyIndicator.show();
 			let that = this;
+			that.FloorEntity();
 			that.Occup_PatDetails();
+		},
+		FloorEntity:function(){
+			let that = this;
+			let _arr = [];
+			let par1 = [];
+			let par2 = [];
+			let afilter = [];
+			let bfilter = [];
+			var targetArray = [];
+			var targetArray1 = [];
+			var targetArray2 = [];
+			var targetArray3 = [];
+
+			let viewModel = new JSONModel();
+			var oModel1 = this.getOwnerComponent().getModel();
+			var oModelFlr_Data = new sap.ui.model.odata.ODataModel(oModel1.sServiceUrl, true);
+			oModelFlr_Data.setUseBatch(false);
+				oModelFlr_Data.read("/userFloorsSet", {
+
+							urlParameters: {
+								"sap-client": "110"
+							},
+							filters: afilter,
+							success: function (oData1, oResponse) {
+								var aFloortemp = []
+								var aFloorArray = []
+								oData1.results.forEach(function (floor) {
+									aFloortemp.push(floor.Orgid);
+		
+								})
+								var aFloortemp1 = _.uniq(aFloortemp, false);
+								aFloortemp1.forEach(function (unqfloor) {
+									aFloorArray.push({
+										'id': unqfloor,
+										'text': unqfloor
+									});
+								})
+								that.createLocalModel("floorModel", aFloorArray);
+
+							},
+
+
+						});
 		},
 		Occup_PatDetails: function () {
 			let that = this;
@@ -288,7 +332,7 @@ sap.ui.define([
 
 						let patientDetailsModel = new JSONModel();
 						that.getView().setModel(patientDetailsModel, "patientDetailsModel");
-						var aFloortemp = []
+						/* var aFloortemp = []
 						var aFloorArray = []
 						oData1.results.forEach(function (floor) {
 							aFloortemp.push(floor.Ishid);
@@ -301,7 +345,7 @@ sap.ui.define([
 								'text': unqfloor
 							});
 						})
-						that.createLocalModel("floorModel", aFloorArray);
+						that.createLocalModel("floorModel", aFloorArray); */
 						oData1.results.forEach(function (res) {
 							if (res.Falnr) {
 								par1.push(res.Falnr);
