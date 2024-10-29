@@ -641,6 +641,22 @@ sap.ui.define([
 			let that = this;
 			that._getCreateNewRecordFragment().open();
 		},
+		onAccount:function(){
+			if (!this._AdDialog) {
+                this._AdDialog = Fragment.load({
+                    id: this.getView().getId(),
+                    name: "ZAMM_BED_OCCUP.view.fragments.Account",
+                    controller: this
+                }).then(function(oDialog) {
+                    this.getView().addDependent(oDialog);
+                    return oDialog;
+                }.bind(this));
+            }
+
+            this._AdDialog.then(function(oDialog) {
+                oDialog.open();
+            });
+		},
 		_onTransferData: function () {
             if (!this._oDialog) {
                 this._oDialog = Fragment.load({
@@ -657,7 +673,11 @@ sap.ui.define([
                 oDialog.open();
             });
         },
-
+		onCloseDialogAccount:function(){
+			this._AdDialog.then(function(oDialog) {
+                oDialog.close();
+            });
+		},
         onCloseDialogTransData: function () {
             this._oDialog.then(function(oDialog) {
                 oDialog.close();

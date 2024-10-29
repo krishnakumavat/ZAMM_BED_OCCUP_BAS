@@ -1,0 +1,38 @@
+<core:FragmentDefinition 
+    xmlns="sap.m" 
+    xmlns:core="sap.ui.core"
+    id="myFragment">
+    <Dialog contentWidth="25%" contentHeight="50%" >
+        <content>
+         <Panel headerText="User Specific Settings ">
+
+        <VBox>
+            <Label text="Institute" width ="40%"/>
+            <ComboBox selectedKey="{/transferType}"> 
+                <core:Item key="..." text="..." />
+                </ComboBox>
+            
+            
+            <Label text="Ward" width ="40%"/>
+            <Input value="{/treatmentCategory}" width="10rem" />
+            <Label text="Duration" width ="40%"/>
+            <Input value="{/treatmentCategory}" width="10rem" />
+  
+            <Label text="Occupied Beds" width ="40%"/>
+            <HBox> <CheckBox></CheckBox></HBox>
+            <Label text="Empty Beds" width ="40%"/>
+            <CheckBox></CheckBox>
+            <Label text="Hide Room level" width ="40%"/>
+            <CheckBox></CheckBox>
+        </VBox>
+    </Panel>
+   
+
+
+
+        </content>
+        <beginButton>
+            <Button text="Close" press="onCloseDialogAccount" />
+        </beginButton>
+    </Dialog>
+</core:FragmentDefinition>

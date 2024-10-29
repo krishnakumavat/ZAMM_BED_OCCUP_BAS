@@ -2,7 +2,7 @@
     xmlns="sap.m" 
     xmlns:core="sap.ui.core"
     id="myFragment">
-    <Dialog contentWidth="75%" contentHeight="80%" >
+    <Dialog contentWidth="25%" contentHeight="60%" >
         <content>
          <Panel headerText="Transfer Data">
 
