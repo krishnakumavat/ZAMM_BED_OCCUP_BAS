@@ -55,6 +55,7 @@ sap.ui.define([
 			return this._patientDetailsFragment;
 		},
 		_getCreateNewRecordFragment: function () {
+			//test comment
 			var that = this;
 			if (!this._createNewRecordFragment) {
 				this._createNewRecordFragment = sap.ui.xmlfragment("Create Record", "ZAMM_BED_OCCUP.view.fragments.createNewRecord", this);
